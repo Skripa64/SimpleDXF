@@ -1,0 +1,8 @@
+D:\Projects\SimpleDXF\SimpleDXF\bin\Debug\SimpleDXF.exe.config
+D:\Projects\SimpleDXF\SimpleDXF\bin\Debug\SimpleDXF.exe
+D:\Projects\SimpleDXF\SimpleDXF\bin\Debug\SimpleDXF.pdb
+D:\Projects\SimpleDXF\SimpleDXF\obj\Debug\SimpleDXF.csprojResolveAssemblyReference.cache
+D:\Projects\SimpleDXF\SimpleDXF\obj\Debug\SimpleDXF.Properties.Resources.resources
+D:\Projects\SimpleDXF\SimpleDXF\obj\Debug\SimpleDXF.csproj.GenerateResource.Cache
+D:\Projects\SimpleDXF\SimpleDXF\obj\Debug\SimpleDXF.exe
+D:\Projects\SimpleDXF\SimpleDXF\obj\Debug\SimpleDXF.pdb
