@@ -9,12 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using System.IO;
+using System.Globalization;
 
 namespace SimpleDXF
 {
     public partial class Form1 : Form
     {
         bool loaded = false;
+        string file;
+        DXF drawing = new DXF();
 
         public Form1()
         {
@@ -57,12 +61,34 @@ namespace SimpleDXF
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            GL.Color3(Color.Black);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Vertex2(0, 0);
-            GL.Vertex2(100, 100);
-            GL.End();
+            drawing.Draw_All();
 
+            glControl1.SwapBuffers();
+        }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+            GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            FileStream fs = new FileStream(openFileDialog1.FileName, FileMode.Open);
+            StreamReader fileDXF = new StreamReader(fs);
+
+            drawing.Clear();
+
+            char separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0];
+            string input;
+
+            while (!fileDXF.EndOfStream)
+            {
+                input = fileDXF.ReadLine().Replace('.', separator);
+                drawing.Read(input);
+            }
+            fileDXF.Close();
+
+            drawing.Draw_All();
             glControl1.SwapBuffers();
         }
     }

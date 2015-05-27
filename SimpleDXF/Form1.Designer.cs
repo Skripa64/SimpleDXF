@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.glControl1 = new OpenTK.GLControl();
+            this.buttonOpen = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // glControl1
@@ -44,11 +46,26 @@
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             this.glControl1.Resize += new System.EventHandler(this.glControl1_Resize);
             // 
+            // buttonOpen
+            // 
+            this.buttonOpen.Location = new System.Drawing.Point(602, 387);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.TabIndex = 1;
+            this.buttonOpen.Text = "Open";
+            this.buttonOpen.UseVisualStyleBackColor = true;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 431);
+            this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.glControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -60,6 +77,8 @@
         #endregion
 
         private OpenTK.GLControl glControl1;
+        private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
