@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SimpleDXF
 {
     class DXF
     {
-        private enum primitive { POINT, LINE, CIRCLE, ARC, SOLID, MTEXT };
+        private enum primitive {NON, POINT, LINE, CIRCLE, ARC, SOLID, MTEXT };
         primitive type_primitive;
-        private enum coordinate { x0, y0, x1, y1, radius, primary_angle, secondary_angle, drawing_direction, text };
+        private enum coordinate {NON, x0, y0, x1, y1, radius, primary_angle, secondary_angle, drawing_direction, text };
         coordinate type_coordinate;
         private bool next_is_coordinate;
 
@@ -50,8 +51,9 @@ namespace SimpleDXF
                     default:
                         break;
                 }
-                Type_Coordinate(input);
+                
             }
+            Type_Coordinate(input);
         }
 
         private void Type_Primitive(string str)
@@ -154,6 +156,7 @@ namespace SimpleDXF
                 case coordinate.y0:
                     _point.Y0 = Convert.ToDouble(str);
                     all_Primitives.Add_Point(_point);
+                    type_coordinate = coordinate.NON;
                     break;
                 default:
                     break;
@@ -176,6 +179,7 @@ namespace SimpleDXF
                 case coordinate.y1:
                     _line.Y1 = Convert.ToDouble(str);
                    all_Primitives.Add_Line(_line);
+                   type_coordinate = coordinate.NON;
                     break;
                 default:
                     break;
@@ -195,6 +199,7 @@ namespace SimpleDXF
                 case coordinate.radius:
                     _circle.RADIUS = Convert.ToDouble(str);
                     all_Primitives.Add_Circle(_circle);
+                    type_coordinate = coordinate.NON;
                     break;
                 default:
                     break;
@@ -220,6 +225,7 @@ namespace SimpleDXF
                 case coordinate.secondary_angle:
                     _arc.SECONDARY_ANGLE = Convert.ToDouble(str);
                     all_Primitives.Add_Arc(_arc);
+                    type_coordinate = coordinate.NON;
                     break;
                 default:
                     break;
@@ -262,6 +268,7 @@ namespace SimpleDXF
                     {
                         all_Primitives.Add_Solid(_solid);
                         _solid.state = 0;
+                        type_coordinate = coordinate.NON;
                     }
                     break;
                 default:
@@ -294,6 +301,11 @@ namespace SimpleDXF
         public void Clear()
         {
             all_Primitives.Clear_ALL();
+        }
+
+        public void Save()
+        {
+            all_Primitives.Save_Primitives();
         }
     }
 }

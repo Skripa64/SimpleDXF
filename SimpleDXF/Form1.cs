@@ -71,8 +71,6 @@ namespace SimpleDXF
             if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
             GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
 
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
             FileStream fs = new FileStream(openFileDialog1.FileName, FileMode.Open);
             StreamReader fileDXF = new StreamReader(fs);
 
@@ -90,6 +88,11 @@ namespace SimpleDXF
 
             drawing.Draw_All();
             glControl1.SwapBuffers();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            drawing.Save();
         }
     }
 }

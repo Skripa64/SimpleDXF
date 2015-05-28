@@ -7,6 +7,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using System.IO;
 
 namespace SimpleDXF
 {
@@ -205,6 +206,33 @@ namespace SimpleDXF
             all_Circle.Clear();
             all_Arc.Clear();
             all_Solid.Clear();
+        }
+
+        public void Save_Primitives()
+        {
+            FileStream fs = new FileStream("output.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(fs);
+            write.WriteLine("POINTS");
+            foreach (Point _point in all_Point)
+            {
+                write.WriteLine(_point.X0.ToString() + " " + _point.Y0.ToString());
+
+            }
+
+            write.WriteLine("LINES");
+            foreach (Line _line in all_Line)
+            {
+                write.WriteLine(_line.X0.ToString() + " " + _line.Y0.ToString() + " " + _line.X1.ToString() + " " + _line.Y1.ToString());
+
+            }
+
+            write.WriteLine("CIRCLES");
+            foreach (Circle _circle in all_Circle)
+            {
+                write.WriteLine(_circle.X0.ToString() + " " + _circle.Y0.ToString() + " " + _circle.RADIUS.ToString());
+            }
+
+            write.Close();
         }
     }
 }
