@@ -3,49 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace SimpleDXF
 {
-    struct Circle
+    class Circle:Shape
     {
-        private double x0;
-        private double y0;
-        private double radius;
+        public Circle() { }
 
-        public double X0
+        public Circle(Circle circle):base(circle)
         {
-            get
-            {
-                return x0;
-            }
-            set
-            {
-                x0 = value;
-            }
+
         }
 
-        public double Y0
+        public override void Draw()
         {
-            get
-            {
-                return y0;
-            }
-            set
-            {
-                y0 = value;
-            }
-        }
+            double R = radius;
+            double min = x0 - R;
+            double max = x0 + R;
+            double x = min;
+            double y;
 
-        public double RADIUS
-        {
-            get
+            GL.Color3(Color.Black);
+            GL.Begin(PrimitiveType.LineLoop);
+            while (x < max)
             {
-                return radius;
+                y = y0 + Math.Sqrt(R * R - Math.Pow((x - x0), 2));
+                GL.Vertex2(x, y);
+                x += 0.001;
             }
-            set
+            while (x > min)
             {
-                radius = value;
+                y = y0 - Math.Sqrt(R * R - Math.Pow((x - x0), 2));
+                GL.Vertex2(x, y);
+                x -= 0.001;
             }
+            GL.End();
         }
     }
 }

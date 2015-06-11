@@ -3,36 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace SimpleDXF
 {
-    struct Point
+    class Point:Shape
     {
-        private double x0;
-        private double y0;
+        public Point(){}
 
-        public double X0
+        public Point(Point point):base(point)
         {
-            get 
-            {
-                return x0;
-            }
-            set 
-            {
-                x0 = value;
-            }
+
         }
-
-        public double Y0 
+        public override void Draw()
         {
-            get
-            {
-                return y0;
-            }
-            set
-            {
-                y0 = value;
-            }
+            GL.Color3(Color.Black);
+            GL.Begin(PrimitiveType.Points);
+            GL.Vertex2(x0, y0);
+            GL.End();
         }
     }
 }

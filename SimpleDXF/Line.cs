@@ -3,62 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace SimpleDXF
 {
-    struct Line
+    class Line:Shape
     {
-        private double x0;
-        private double y0;
-        private double x1;
-        private double y1;
-
-        public double X0
+        public Line() { }
+        public Line(Line line):base(line)
         {
-            get
-            {
-                return x0;
-            }
-            set
-            {
-                x0 = value;
-            }
+
         }
 
-        public double Y0
+        public override void Draw()
         {
-            get
-            {
-                return y0;
-            }
-            set
-            {
-                y0 = value;
-            }
-        }
-
-        public double X1
-        {
-            get
-            {
-                return x1;
-            }
-            set
-            {
-                x1 = value;
-            }
-        }
-
-        public double Y1
-        {
-            get
-            {
-                return y1;
-            }
-            set
-            {
-                y1 = value;
-            }
+            GL.Color3(Color.Black);
+            GL.Begin(PrimitiveType.Lines);
+            GL.Vertex2(x0, y0);
+            GL.Vertex2(x1, y1);
+            GL.End();
         }
     }
 }

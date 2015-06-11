@@ -17,7 +17,6 @@ namespace SimpleDXF
     public partial class Form1 : Form
     {
         bool loaded = false;
-        string file;
         DXF drawing = new DXF();
 
         public Form1()
@@ -61,7 +60,7 @@ namespace SimpleDXF
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            drawing.Draw_All();
+            drawing.Draw();
 
             glControl1.SwapBuffers();
         }
@@ -86,13 +85,8 @@ namespace SimpleDXF
             }
             fileDXF.Close();
 
-            drawing.Draw_All();
+            drawing.Draw();
             glControl1.SwapBuffers();
-        }
-
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            drawing.Save();
         }
     }
 }

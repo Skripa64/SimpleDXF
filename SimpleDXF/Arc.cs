@@ -3,74 +3,84 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace SimpleDXF
 {
-    struct Arc
+    class Arc:Shape
     {
-        private double x0;
-        private double y0;
-        private double radius;
-        private double primary_angle;
-        private double secondary_angle;
+        public Arc() { }
 
-        public double X0
+        public Arc(Arc arc):base(arc)
         {
-            get
-            {
-                return x0;
-            }
-            set
-            {
-                x0 = value;
-            }
+
         }
 
-        public double Y0
+        public override void Draw()
         {
-            get
-            {
-                return y0;
-            }
-            set
-            {
-                y0 = value;
-            }
-        }
+            double c_x = this.x0;
+            double c_y = this.y0;
+            double radius = this.radius;
+            double primory_angle = this.primary_angle;
+            double secondary_angle = this.secondary_angle;
+            double x0 = radius * Math.Cos(primory_angle * Math.PI / 180) + c_x;
+            double y0 = radius * Math.Sin(primory_angle * Math.PI / 180) + c_y;
+            double x;
+            double y;
+            double step = 1 / radius;
+            primory_angle += step;
 
-        public double RADIUS
-        {
-            get
+            if (primory_angle <= secondary_angle)
             {
-                return radius;
-            }
-            set
-            {
-                radius = value;
-            }
-        }
+                while (primory_angle <= secondary_angle)
+                {
+                    x = radius * Math.Cos(primory_angle * Math.PI / 180) + c_x;
+                    y = radius * Math.Sin(primory_angle * Math.PI / 180) + c_y;
+                    GL.Color3(Color.Black);
+                    GL.Begin(PrimitiveType.Lines);
+                    GL.Vertex2(x0, y0);
+                    GL.Vertex2(x, y);
+                    GL.End();
 
-        public double PRIMORY_ANGLE
-        {
-            get
-            {
-                return primary_angle;
+                    x0 = x;
+                    y0 = y;
+                    primory_angle += step;
+                }
             }
-            set
+            else
             {
-                primary_angle = value;
-            }
-        }
+                while (primory_angle < 0)
+                {
+                    x = radius * Math.Cos(primory_angle * Math.PI / 180) + c_x;
+                    y = radius * Math.Sin(primory_angle * Math.PI / 180) + c_y;
+                    GL.Color3(Color.Black);
+                    GL.Begin(PrimitiveType.Lines);
+                    GL.Vertex2(x0, y0);
+                    GL.Vertex2(x, y);
+                    GL.End();
 
-        public double SECONDARY_ANGLE
-        {
-            get
-            {
-                return secondary_angle;
-            }
-            set
-            {
-                secondary_angle = value;
+                    x0 = x;
+                    y0 = y;
+                    primory_angle += step;
+                }
+                primory_angle = 0;
+                while (primory_angle < secondary_angle)
+                {
+                    x = radius * Math.Cos(primory_angle * Math.PI / 180) + c_x;
+                    y = radius * Math.Sin(primory_angle * Math.PI / 180) + c_y;
+                    GL.Color3(Color.Black);
+                    GL.Begin(PrimitiveType.Lines);
+                    GL.Vertex2(x0, y0);
+                    GL.Vertex2(x, y);
+                    GL.End();
+
+                    x0 = x;
+                    y0 = y;
+                    primory_angle += step;
+                }
             }
         }
     }

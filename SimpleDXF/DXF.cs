@@ -9,19 +9,19 @@ namespace SimpleDXF
 {
     class DXF
     {
+        List<Shape> Shapes = new List<Shape>();
+
         private enum primitive {NON, POINT, LINE, CIRCLE, ARC, SOLID, MTEXT };
         primitive type_primitive;
         private enum coordinate {NON, x0, y0, x1, y1, radius, primary_angle, secondary_angle, drawing_direction, text };
         coordinate type_coordinate;
         private bool next_is_coordinate;
 
-        Point _point;
-        Line _line;
-        Circle _circle;
-        Arc _arc;
-        Solid _solid;
-
-        Primitives all_Primitives = new Primitives();
+        Point _point = new Point();
+        Line _line = new Line();
+        Circle _circle = new Circle();
+        Arc _arc = new Arc();
+        //Solid _solid;
 
         public void Read(string input)
         {
@@ -43,10 +43,10 @@ namespace SimpleDXF
                         Read_Arc(input);
                         break;
                     case primitive.SOLID:
-                        Read_Solid(input);
+                        //Read_Solid(input);
                         break;
                     case primitive.MTEXT:
-                        Read_MText(input);
+                        //Read_MText(input);
                         break;
                     default:
                         break;
@@ -127,24 +127,7 @@ namespace SimpleDXF
                     next_is_coordinate = false;
                     break;
             }
-            
-            /*
-            if (str == " 10" || str == " 20" || str == " 30" || str == " 11" || str == " 21" || str == " 31" || str == " 40" || str == " 50" || str == " 51" || str == "  1" || str == " 72")
-            {
-                next_is_coordinate = true;
-                if (str == " 10") type_coordinate = "10";
-                if (str == " 20") type_coordinate = "20";
-                if (str == " 11") type_coordinate = "11";
-                if (str == " 21") type_coordinate = "21";
-                if (str == " 40") type_coordinate = "40";
-                if (str == " 50") type_coordinate = "50";
-                if (str == " 51") type_coordinate = "51";
-                if (str == "  1") type_coordinate = "1";
-                if (str == " 72") type_coordinate = "72";
-            }
-            else next_is_coordinate = false;
-        
-          */ }
+        }
 
         private void Read_Point(string str)
         {
@@ -155,7 +138,7 @@ namespace SimpleDXF
                     break;
                 case coordinate.y0:
                     _point.Y0 = Convert.ToDouble(str);
-                    all_Primitives.Add_Point(_point);
+                    Shapes.Add(new Point(_point));
                     type_coordinate = coordinate.NON;
                     break;
                 default:
@@ -178,7 +161,7 @@ namespace SimpleDXF
                     break;
                 case coordinate.y1:
                     _line.Y1 = Convert.ToDouble(str);
-                   all_Primitives.Add_Line(_line);
+                    Shapes.Add(new Line(_line));
                    type_coordinate = coordinate.NON;
                     break;
                 default:
@@ -197,8 +180,8 @@ namespace SimpleDXF
                     _circle.Y0 = Convert.ToDouble(str);
                     break;
                 case coordinate.radius:
-                    _circle.RADIUS = Convert.ToDouble(str);
-                    all_Primitives.Add_Circle(_circle);
+                    _circle.Radius = Convert.ToDouble(str);
+                    Shapes.Add(new Circle(_circle));
                     type_coordinate = coordinate.NON;
                     break;
                 default:
@@ -217,14 +200,14 @@ namespace SimpleDXF
                     _arc.Y0 = Convert.ToDouble(str);
                     break;
                 case coordinate.radius:
-                    _arc.RADIUS = Convert.ToDouble(str);
+                    _arc.Radius = Convert.ToDouble(str);
                     break;
                 case coordinate.primary_angle:
-                    _arc.PRIMORY_ANGLE = Convert.ToDouble(str);
+                    _arc.Primory_angle = Convert.ToDouble(str);
                     break;
                 case coordinate.secondary_angle:
-                    _arc.SECONDARY_ANGLE = Convert.ToDouble(str);
-                    all_Primitives.Add_Arc(_arc);
+                    _arc.Secondary_angle = Convert.ToDouble(str);
+                    Shapes.Add(new Arc(_arc));
                     type_coordinate = coordinate.NON;
                     break;
                 default:
@@ -232,80 +215,78 @@ namespace SimpleDXF
             }
         }
 
+        /*
         private void Read_Solid(string str)
         {
-            switch (type_coordinate)
-            {
+             switch (type_coordinate)
+             {
                 case coordinate.x0:
-                    _line.X0 = Convert.ToDouble(str);
-                    break;
+                     _line.X0 = Convert.ToDouble(str);
+                     break;
                 case coordinate.y0:
-                    _line.Y0 = Convert.ToDouble(str);
-                    break;
+                     _line.Y0 = Convert.ToDouble(str);
+                     break;
                 case coordinate.x1:
-                    _line.X1 = Convert.ToDouble(str);
-                    break;
+                     _line.X1 = Convert.ToDouble(str);
+                     break;
                 case coordinate.y1:
-                    _line.Y1 = Convert.ToDouble(str);
-                    if (_solid.state == 0)
-                    {
+                     _line.Y1 = Convert.ToDouble(str);
+                     if (_solid.state == 0)
+                     {
                         _solid.first = _line;
-                    }
-                    if (_solid.state == 1)
-                    {
+                     }
+                     if (_solid.state == 1)
+                     {
                         _solid.second = _line;
-                    }
-                    if (_solid.state == 2)
-                    {
+                     }
+                     if (_solid.state == 2)
+                     {
                         _solid.third = _line;
-                    }
-                    if (_solid.state == 3)
-                    {
+                     }
+                     if (_solid.state == 3)
+                     {
                         _solid.fourth = _line;
-                    }
-                    _solid.state++;
-                    if (_solid.state >= 4)
+                     }
+                     _solid.state++;
+                     if (_solid.state >= 4)
+                      {
+                         _solid.state = 0;
+                         type_coordinate = coordinate.NON;
+                     }
+                     break;
+                 default:
+                     break;
+             }
+       }
+
+                private void Read_MText(string str)
+                {
+                    switch (type_coordinate)
                     {
-                        all_Primitives.Add_Solid(_solid);
-                        _solid.state = 0;
-                        type_coordinate = coordinate.NON;
+                        case coordinate.x0:
+                            break;
+                        case coordinate.y0:
+                            break;
+                        case coordinate.drawing_direction:
+                            break;
+                        case coordinate.text:
+                            break;
+                        default:
+                            break;
                     }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void Read_MText(string str)
+                }
+        */
+        public void Draw()
         {
-            switch (type_coordinate)
+            foreach(Shape shape in Shapes)
             {
-                case coordinate.x0:
-                    break;
-                case coordinate.y0:
-                    break;
-                case coordinate.drawing_direction:
-                    break;
-                case coordinate.text:
-                    break;
-                default:
-                    break;
+                shape.Draw();
             }
-        }
-
-        public void Draw_All()
-        {
-            all_Primitives.Draw_Primitives();
         }
 
         public void Clear()
         {
-            all_Primitives.Clear_ALL();
-        }
-
-        public void Save()
-        {
-            all_Primitives.Save_Primitives();
+            Shapes.Clear();
         }
     }
 }
