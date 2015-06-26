@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace SimpleDXF
 {
     class DXF
     {
-        List<Shape> Shapes = new List<Shape>();
+        List<IShape> Shapes = new List<IShape>();
 
         private enum primitive {NON, POINT, LINE, CIRCLE, ARC, SOLID, MTEXT };
         primitive type_primitive;
@@ -180,7 +179,7 @@ namespace SimpleDXF
                     _circle.Y0 = Convert.ToDouble(str);
                     break;
                 case coordinate.radius:
-                    _circle.Radius = Convert.ToDouble(str);
+                    _circle.RADIUS = Convert.ToDouble(str);
                     Shapes.Add(new Circle(_circle));
                     type_coordinate = coordinate.NON;
                     break;
@@ -200,13 +199,13 @@ namespace SimpleDXF
                     _arc.Y0 = Convert.ToDouble(str);
                     break;
                 case coordinate.radius:
-                    _arc.Radius = Convert.ToDouble(str);
+                    _arc.RADIUS = Convert.ToDouble(str);
                     break;
                 case coordinate.primary_angle:
-                    _arc.Primory_angle = Convert.ToDouble(str);
+                    _arc.PRIMARY_ANGLE = Convert.ToDouble(str);
                     break;
                 case coordinate.secondary_angle:
-                    _arc.Secondary_angle = Convert.ToDouble(str);
+                    _arc.SECONDARY_ANGLE = Convert.ToDouble(str);
                     Shapes.Add(new Arc(_arc));
                     type_coordinate = coordinate.NON;
                     break;
@@ -278,7 +277,7 @@ namespace SimpleDXF
         */
         public void Draw()
         {
-            foreach(Shape shape in Shapes)
+            foreach(IShape shape in Shapes)
             {
                 shape.Draw();
             }

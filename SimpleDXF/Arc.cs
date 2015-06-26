@@ -10,16 +10,40 @@ using System.Drawing;
 
 namespace SimpleDXF
 {
-    class Arc:Shape
+    class Arc:IShape
     {
-        public Arc() { }
+        double x0;
+        double y0;
+        double radius;
+        double primary_angle;
+        double secondary_angle;
 
-        public Arc(Arc arc):base(arc)
+        public double X0
         {
-
+            set { this.x0 = value; }
         }
 
-        public override void Draw()
+        public double Y0
+        {
+            set { this.Y0 = value; }
+        }
+
+        public double RADIUS
+        {
+            set { this.radius = value; }
+        }
+
+        public double PRIMARY_ANGLE
+        {
+            set { this.primary_angle = value; }
+        }
+
+        public double SECONDARY_ANGLE
+        {
+            set { this.secondary_angle = value; }
+        }
+
+        void IShape.Draw()
         {
             double c_x = this.x0;
             double c_y = this.y0;
@@ -82,6 +106,24 @@ namespace SimpleDXF
                     primory_angle += step;
                 }
             }
+        }
+
+        public Arc()
+        {
+            this.x0 = 0;
+            this.y0 = 0;
+            this.radius = 0;
+            this.primary_angle = 0;
+            this.secondary_angle = 0;
+        }
+
+        public Arc(Arc arc)
+        {
+            this.x0 = arc.x0;
+            this.y0 = arc.y0;
+            this.radius = arc.radius;
+            this.primary_angle = arc.primary_angle;
+            this.secondary_angle = arc.secondary_angle;
         }
     }
 }

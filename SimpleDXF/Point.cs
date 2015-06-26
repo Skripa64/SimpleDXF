@@ -10,20 +10,39 @@ using System.Drawing;
 
 namespace SimpleDXF
 {
-    class Point:Shape
+    class Point:IShape
     {
-        public Point(){}
+        double x0;
+        double y0;
 
-        public Point(Point point):base(point)
+        public double X0
         {
-
+            set { this.x0 = value; }
         }
-        public override void Draw()
+
+        public double Y0
+        {
+            set { this.y0 = value; }
+        }
+
+        void IShape.Draw()
         {
             GL.Color3(Color.Black);
             GL.Begin(PrimitiveType.Points);
             GL.Vertex2(x0, y0);
             GL.End();
+        }
+
+        public Point()
+        {
+            this.x0 = 0;
+            this.y0 = 0;
+        }
+
+        public Point(Point point)
+        {
+            this.x0 = point.x0;
+            this.y0 = point.y0;
         }
     }
 }
